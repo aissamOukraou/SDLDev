@@ -15,7 +15,6 @@ bool Game::getRunning()const
 }
 bool Game::init(char* const title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
-    SDL_Surface *image_surface=nullptr;
     SDL_Texture *surface_texture(nullptr);
     if(SDL_Init(SDL_INIT_AUDIO || SDL_INIT_VIDEO) == 0)
     {
@@ -54,19 +53,28 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
         cout <<"SDL_Init Failed!"<<SDL_GetError()<<endl;
         return false;
     }
-    image_surface= SDL_LoadBMP("../assets/rider.bmp");
+    SDL_Surface* image_surface= SDL_LoadBMP("assets/rider.bmp");
     if(image_surface == nullptr)
     {
         cout <<"SDL_LoadBMP Failed."<<SDL_GetError()<<endl;
     }
+    //SDL_SetRenderTarget(_renderer, nullptr);
     surface_texture= SDL_CreateTextureFromSurface(_renderer, image_surface);
-    if(_texture == nullptr)
+    if(surface_texture == nullptr)
     {
         cout <<"SDL_CreateTextrueFromSurface Failed."<<SDL_GetError()<<endl;
-    }
+    }      
     SDL_FreeSurface(image_surface);
-    SDL_QueryTexture(surface_texture, nullptr, nullptr, &_srcRect.w, &_srcRect.h);
+    SDL_QueryTexture(surface_texture,nullptr, nullptr, &_srcRect.w, &_srcRect.h);
     _texture= SDL_CreateTexture(_renderer,SDL_PIXELFORMAT_RGBA8888 ,SDL_TEXTUREACCESS_TARGET, _srcRect.w, _srcRect.h);
+    SDL_SetRenderTarget(_renderer,_texture);
+    SDL_RenderCopy(_renderer, surface_texture, nullptr, nullptr);
+    SDL_DestroyTexture(surface_texture);
+    SDL_SetRenderTarget(_renderer, nullptr);
+    _destRect.x=_srcRect.x=0;
+    _destRect.y=_srcRect.y=0;
+    _destRect.w=_srcRect.w;
+    _destRect.h=_srcRect.h;
     cout <<"init succeeded"<<endl;
     _running= true;
     return true;
@@ -74,9 +82,8 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
 void Game::render()
 {
     
-    //clear the renderer to the draw color
     SDL_RenderClear(_renderer);
-    //draw to the screen
+    SDL_RenderCopy(_renderer, _texture, &_srcRect, &_destRect);
     SDL_RenderPresent(_renderer);
 }
 void Game::handleEvents()

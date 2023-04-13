@@ -20,7 +20,7 @@ private:
 	SDL_Renderer *_renderer;
 	SDL_Texture *_texture;
 	SDL_Rect _srcRect;
-	SDL_Rect _destRectangle;
+	SDL_Rect _destRect;
 
 };
 #endif 
