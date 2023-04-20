@@ -10,16 +10,18 @@ Player::~Player()
 {
 
 }
-void Player::draw()
+void Player::Load(int xpos, int ypos, int width, int height, string textureID)
+{
+    GameObject::Load(xpos, ypos, width, height, textureID);
+}
+void Player::draw(SDL_Renderer* renderer)
 {
     cout <<"Draw PLayer"<<endl;
-    GameObject::draw();
+    GameObject::draw(renderer);
 }
 void Player::update()
 {
-    cout <<"update Player"<<endl;
-    _xpos=10;
-    _ypos=20;
+    _xpos-=1;
 }
 void Player::clean()
 {
