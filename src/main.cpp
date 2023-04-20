@@ -1,20 +1,20 @@
 #include "../include/Game.hpp"
+#include "../include/TextureManager.hpp"
 
-Game *game(nullptr);
 
  int main(int argc, char** argv)
  {
-	game= new Game();
-	game->init("Chapter 1", 100, 100, 640, 480, false); 
+	Game *game=new Game();
+	game->init("Game", 100, 100, 640, 480, false);
 	while( game->getRunning())
 	{
 		game->handleEvents();
-		//game->update();
+		game->update();
 		game->render();
 	}
 	game->clean();
 
-	delete game;
+	//delete game;
 	
  	return 0;
  }

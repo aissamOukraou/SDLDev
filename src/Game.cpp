@@ -1,10 +1,9 @@
 #include "../include/Game.hpp"
+#include "SDL2/SDL_image.h"
 #include <iostream>
-int WIDTH=640;
-int HEIGHT=480;
 using namespace std;
 Game::Game()
-{    
+{
 }
 Game::~Game()
 {
@@ -53,7 +52,8 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
         cout <<"SDL_Init Failed!"<<SDL_GetError()<<endl;
         return false;
     }
-    SDL_Surface* image_surface= SDL_LoadBMP("assets/rider.bmp");
+    //La première utilisation avant l'introduction de TextureManager Class
+    /*SDL_Surface* image_surface= IMG_Load("assets/animate-alpha.png");
     if(image_surface == nullptr)
     {
         cout <<"SDL_LoadBMP Failed."<<SDL_GetError()<<endl;
@@ -66,7 +66,9 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
     }      
     SDL_FreeSurface(image_surface);
     SDL_QueryTexture(surface_texture,nullptr, nullptr, &_srcRect.w, &_srcRect.h);
-    _texture= SDL_CreateTexture(_renderer,SDL_PIXELFORMAT_RGBA8888 ,SDL_TEXTUREACCESS_TARGET, _srcRect.w, _srcRect.h);
+    _texture= SDL_CreateTexture(_renderer,SDL_PIXELFORMAT_RGBA8888 ,SDL_TEXTUREACCESS_TARGET,_srcRect.w, _srcRect.h);
+    _srcRect.w=128;
+    _srcRect.h=82;
     SDL_SetRenderTarget(_renderer,_texture);
     SDL_RenderCopy(_renderer, surface_texture, nullptr, nullptr);
     SDL_DestroyTexture(surface_texture);
@@ -74,22 +76,32 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
     _destRect.x=_srcRect.x=0;
     _destRect.y=_srcRect.y=0;
     _destRect.w=_srcRect.w;
-    _destRect.h=_srcRect.h;
+    _destRect.h=_srcRect.h;*/
+    if(!TextureManager::textureManagerInstance()->Load("assets/animate.png", "animate", _renderer))
+    {
+        return false;
+    } 
+    TextureManager::textureManagerInstance()->draw("animate", 0, 0, 128, 82, _renderer, SDL_FLIP_NONE);
+    TextureManager::textureManagerInstance()->drawFrame("animate", 100, 100, 128, 82, _renderer, _currentFrame, 1, SDL_FLIP_NONE);
     cout <<"init succeeded"<<endl;
     _running= true;
     return true;
 }
 void Game::render()
 {
-    
+    SDL_SetRenderDrawColor(_renderer, 255,255,255,255);
+    //SDL_Point point={30,40}; 
     SDL_RenderClear(_renderer);
-    SDL_RenderCopy(_renderer, _texture, &_srcRect, &_destRect);
+    //SDL_RenderCopy(_renderer, _texture, &_srcRect, &_destRect);
+    //_textureManager.draw("animate", 0, 0, 128, 82, _renderer, SDL_FLIP_NONE);
+    //_textureManager.drawFrame("animate", 100, 100, 128, 82, _renderer, _currentFrame, 1, SDL_FLIP_NONE);
+    //SDL_RenderCopyEx(_renderer, _texture, &_srcRect,&_destRect,0,nullptr, SDL_FLIP_HORIZONTAL);
     SDL_RenderPresent(_renderer);
 }
 void Game::handleEvents()
 {
     SDL_Event event;
-    if(SDL_PollEvent(&event))
+    if(SDL_PollEvent(&event)) 
     {
         switch(event.type)
         {
@@ -103,10 +115,13 @@ void Game::handleEvents()
     }
 
 }
+void Game::update()
+{
+    _currentFrame=int((SDL_GetTicks()/100)%6); 
+}
 void Game::clean()
 {
     cout <<"Cleaning Game"<<endl;
-    SDL_DestroyTexture(_texture);
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     SDL_Quit();
