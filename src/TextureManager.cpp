@@ -12,6 +12,8 @@ TextureManager::TextureManager()
 }
 TextureManager::~TextureManager()
 {
+    delete _textureManagerInstance;
+    _textureManagerInstance=nullptr;
 }
 bool TextureManager::Load(char* fileName, string textureID, SDL_Renderer *renderer)
 {

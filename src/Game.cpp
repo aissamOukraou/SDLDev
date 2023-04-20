@@ -77,12 +77,6 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
     _destRect.y=_srcRect.y=0;
     _destRect.w=_srcRect.w;
     _destRect.h=_srcRect.h;*/
-    if(!TextureManager::textureManagerInstance()->Load("assets/animate.png", "animate", _renderer))
-    {
-        return false;
-    } 
-    TextureManager::textureManagerInstance()->draw("animate", 0, 0, 128, 82, _renderer, SDL_FLIP_NONE);
-    TextureManager::textureManagerInstance()->drawFrame("animate", 100, 100, 128, 82, _renderer, _currentFrame, 1, SDL_FLIP_NONE);
     cout <<"init succeeded"<<endl;
     _running= true;
     return true;
@@ -90,8 +84,21 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
 void Game::render()
 {
     SDL_SetRenderDrawColor(_renderer, 255,255,255,255);
+    //SDL_RenderClear(_renderer);
     //SDL_Point point={30,40}; 
-    SDL_RenderClear(_renderer);
+    TextureManager *textureManager=TextureManager::textureManagerInstance();//a static method, we create The unique instance
+    if(textureManager != nullptr)
+    {
+        //cout <<"textureManagerInstance SUCCEEDED"<<endl;
+        textureManager->Load("assets/animate.png", "animate", _renderer);   
+        TextureManager::textureManagerInstance()->draw("animate", 0, 0, 128, 82, _renderer, SDL_FLIP_NONE);
+        TextureManager::textureManagerInstance()->drawFrame("animate", 100, 100, 128, 82, _renderer, _currentFrame, 1, SDL_FLIP_NONE);
+    }
+    else 
+    {
+        cout <<"textureManagerInstance FAILED"<<endl;
+    }
+    //SDL_RenderClear(_renderer);
     //SDL_RenderCopy(_renderer, _texture, &_srcRect, &_destRect);
     //_textureManager.draw("animate", 0, 0, 128, 82, _renderer, SDL_FLIP_NONE);
     //_textureManager.drawFrame("animate", 100, 100, 128, 82, _renderer, _currentFrame, 1, SDL_FLIP_NONE);
