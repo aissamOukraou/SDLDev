@@ -1,7 +1,7 @@
 #include "../include/TextureManager.hpp"
 #include "SDL2/SDL_image.h"
 #include <iostream>
-
+#include "../include/Game.hpp"
 using namespace std;
 typedef TextureManager TheTextureManager;
 
@@ -12,8 +12,8 @@ TextureManager::TextureManager()
 }
 TextureManager::~TextureManager()
 {
-    delete _textureManagerInstance;
-    _textureManagerInstance=nullptr;
+    //delete _textureManagerInstance;
+    //_textureManagerInstance=nullptr;
 }
 bool TextureManager::Load(char* fileName, string textureID, SDL_Renderer *renderer)
 {
@@ -26,6 +26,7 @@ bool TextureManager::Load(char* fileName, string textureID, SDL_Renderer *render
     }
     if(image_surface != nullptr)
     {
+        cout <<"Image Has been Loaded Succefuly"<<endl;
         SDL_Texture* surface_texture= SDL_CreateTextureFromSurface(renderer, image_surface);
         SDL_FreeSurface(image_surface);
         if(surface_texture != nullptr)
@@ -35,6 +36,7 @@ bool TextureManager::Load(char* fileName, string textureID, SDL_Renderer *render
             SDL_SetRenderTarget(renderer, _textureMap[textureID]);
             SDL_RenderCopy(renderer, surface_texture,nullptr, nullptr);
             SDL_SetRenderTarget(renderer, nullptr);
+            //SDL_RenderCopy(renderer, _textureMap[textureID],nullptr, nullptr);
             SDL_DestroyTexture(surface_texture);
             return true;
         }
@@ -54,6 +56,7 @@ void TextureManager::draw(std::string const textureID, int xpos, int ypos, int w
 }
 void TextureManager::drawFrame(std::string const textureID, int xpos, int ypos, int width, int height, SDL_Renderer *renderer, int currentFrame, int currentRow, SDL_RendererFlip flip)
 {
+    
     SDL_Rect srcRect;
     SDL_Rect destRect;
     srcRect.x = currentFrame*width; 
@@ -76,4 +79,9 @@ TheTextureManager* TheTextureManager::textureManagerInstance()
         return _textureManagerInstance;
     } 
 
+}
+SDL_Texture* TextureManager::getTextureManager( string textureID) 
+{
+    return _textureMap[textureID];
+    //return _textureMap.find(textureID)->second;
 }

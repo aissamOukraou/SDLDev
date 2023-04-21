@@ -6,6 +6,7 @@
 class TextureManager
 {
 public:
+    SDL_Texture* getTextureManager(std::string textureID) ; 
     ~TextureManager();
     static TextureManager* textureManagerInstance();//It doesn't need a instance 
     bool Load(char* filename, std::string textureID, SDL_Renderer *renderer);

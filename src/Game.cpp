@@ -77,14 +77,23 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
     _destRect.y=_srcRect.y=0;
     _destRect.w=_srcRect.w;
     _destRect.h=_srcRect.h;*/
+    _gameObject.Load(0,100,128,82,"animate");
+    _player.Load(0,200,128,82,"animate");
+
     cout <<"init succeeded"<<endl;
     _running= true;
     return true;
 }
 void Game::render()
 {
-    SDL_SetRenderDrawColor(_renderer, 255,255,255,255);
-    //SDL_RenderClear(_renderer);
+    TextureManager *theTextureManager= TextureManager::textureManagerInstance();
+    theTextureManager->Load("assets/animate.png", "animate", _renderer);
+    _gameObject.draw(_renderer);
+    _player.draw(_renderer);
+    SDL_RenderPresent(_renderer);
+    /*
+    SDL_SetRenderDrawColor(_renderer, 255,0,0,255);
+    SDL_RenderClear(_renderer);
     //SDL_Point point={30,40}; 
     TextureManager *textureManager=TextureManager::textureManagerInstance();//a static method, we create The unique instance
     if(textureManager != nullptr)
@@ -97,13 +106,12 @@ void Game::render()
     else 
     {
         cout <<"textureManagerInstance FAILED"<<endl;
-    }
+    }*/
     //SDL_RenderClear(_renderer);
     //SDL_RenderCopy(_renderer, _texture, &_srcRect, &_destRect);
     //_textureManager.draw("animate", 0, 0, 128, 82, _renderer, SDL_FLIP_NONE);
     //_textureManager.drawFrame("animate", 100, 100, 128, 82, _renderer, _currentFrame, 1, SDL_FLIP_NONE);
     //SDL_RenderCopyEx(_renderer, _texture, &_srcRect,&_destRect,0,nullptr, SDL_FLIP_HORIZONTAL);
-    SDL_RenderPresent(_renderer);
 }
 void Game::handleEvents()
 {
@@ -124,7 +132,9 @@ void Game::handleEvents()
 }
 void Game::update()
 {
-    _currentFrame=int((SDL_GetTicks()/100)%6); 
+    _gameObject.update();
+    _player.update();
+    //_currentFrame=int((SDL_GetTicks()/100)%6); 
 }
 void Game::clean()
 {
@@ -133,3 +143,12 @@ void Game::clean()
     SDL_DestroyWindow(_window);
     SDL_Quit();
 }
+SDL_Renderer* Game::getGameRenderer() const 
+{
+    return _renderer;
+}
+void Game::setGameRenderer(SDL_Renderer* renderer)
+{
+    _renderer=renderer;
+}
+
