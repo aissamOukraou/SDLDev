@@ -2,13 +2,13 @@
 #define _GAME_HPP
 #include "SDL2/SDL.h"
 #include "TextureManager.hpp"
-#include "../include/Player.hpp" 
+#include "Player.hpp" 
+#include <vector>
 
 class Game
 {
 public:
-	SDL_Renderer* getGameRenderer() const;
-	void setGameRenderer(SDL_Renderer* renderer);
+	//SDL_Renderer* getGameRenderer() const;
 	Game();
 	~Game();
 	bool init(char* const title, int xpos, int ypos, int width, int height, bool fullscreen);
@@ -19,6 +19,7 @@ public:
 	bool getRunning() const;
 
 private:
+	//vector<GameObject*>_gameObjects;
 	GameObject _gameObject;
 	Player _player;
 	bool _running;

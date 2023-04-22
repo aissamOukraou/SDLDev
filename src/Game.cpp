@@ -143,12 +143,8 @@ void Game::clean()
     SDL_DestroyWindow(_window);
     SDL_Quit();
 }
-SDL_Renderer* Game::getGameRenderer() const 
+/*SDL_Renderer* Game::getGameRenderer() const 
 {
     return _renderer;
-}
-void Game::setGameRenderer(SDL_Renderer* renderer)
-{
-    _renderer=renderer;
-}
+}*/
 

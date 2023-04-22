@@ -32,6 +32,10 @@ void GameObject::draw(SDL_Renderer* renderer)
 }
 void GameObject::update()
 {
+    if(_xpos > 640)
+    {
+        _xpos-=640;
+    }
     _xpos+=2;
     _currentFrame=int((SDL_GetTicks()/100)%6);
 }

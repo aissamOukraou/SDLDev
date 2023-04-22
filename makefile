@@ -1,6 +1,6 @@
 CC= g++ -g
 CFLAGS= -Wall
-OBJ= obj/main.o obj/Game.o obj/TextureManager.o obj/GameObject.o obj/Player.o
+OBJ= obj/main.o obj/Game.o obj/TextureManager.o obj/GameObject.o obj/Player.o obj/Enemy.o
 COMP= -I/usr/include/SDL2
 LIB= -lSDL2 -lSDL2_image 
 LINKEDIT= -L/usr/bin/sdl2-config
@@ -18,6 +18,8 @@ obj/GameObject.o: src/GameObject.cpp
 	$(CC) $(CFLAGS) src/GameObject.cpp -c -o obj/GameObject.o $(COMP) $(LIB)
 obj/Player.o: src/Player.cpp		
 	$(CC) $(CFLAGS) src/Player.cpp -c -o obj/Player.o $(COMP) $(LIB)	
+obj/Enemy.o: src/Enemy.cpp
+	$(CC) $(CFLAGS) src/Enemy.cpp -c -o obj/Enemy.o $(COMP) $(LIB)	
 
 cleanO:
 	rm obj/*

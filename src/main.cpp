@@ -11,7 +11,7 @@
 		game->handleEvents();
 		game->update();
 		game->render();
-		SDL_Delay(5);
+		SDL_Delay(10);
 	}
 	game->clean();
 
