@@ -28,7 +28,7 @@ void GameObject::draw(SDL_Renderer* renderer)
     {
         textureManager->drawFrame(_textureID, _xpos, _ypos, _width, _height, renderer,_currentFrame,_currentRow, SDL_FLIP_NONE);
     }
-    else {cout <<"DrawFrame FAILED"<<endl;}    
+    else {cout <<"DrawFrame FAILED"<<endl;} 
 }
 void GameObject::update()
 {

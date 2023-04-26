@@ -17,7 +17,7 @@ void Player::Load(int xpos, int ypos, int width, int height, string textureID)
 }
 void Player::draw(SDL_Renderer* renderer)
 {
-    cout <<"Draw PLayer"<<endl;
+    cout <<"Testing that we're calling the player Draw function"<<endl;
     GameObject::draw(renderer);
 }
 void Player::update()

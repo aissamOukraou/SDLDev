@@ -9,10 +9,10 @@ public:
     GameObject();
     ~GameObject();
     std::string getObjectTextureID() const;
-    void Load(int xpos, int ypos, int width, int height, std::string textureID);
-    void draw(SDL_Renderer* renderr);
-    void update();
-    void clean();
+    virtual void Load(int xpos, int ypos, int width, int height, std::string textureID);
+    virtual void draw(SDL_Renderer* renderr);
+    virtual void update();
+    virtual void clean();
 protected:
     std::string _textureID;//l'id de la texture de l'objet
     int _currentFrame;

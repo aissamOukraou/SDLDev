@@ -3,6 +3,7 @@
 #include "SDL2/SDL.h"
 #include "TextureManager.hpp"
 #include "Player.hpp" 
+#include "Enemy.hpp"
 #include <vector>
 
 class Game
@@ -19,9 +20,12 @@ public:
 	bool getRunning() const;
 
 private:
-	//vector<GameObject*>_gameObjects;
-	GameObject _gameObject;
-	Player _player;
+	std::vector<GameObject* > _gameObjects;//an array to the parent class and to store derived types
+	GameObject *_gameObject;
+	GameObject *_player;
+	GameObject *_enemy1;
+	//GameObject *_enemy2;
+	//GameObject *_enemy3;
 	bool _running;
 	SDL_Window* _window; 
 	SDL_Renderer *_renderer;

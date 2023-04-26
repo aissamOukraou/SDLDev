@@ -14,6 +14,16 @@ bool Game::getRunning()const
 }
 bool Game::init(char* const title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
+    _player=new Player();
+    _gameObject= new GameObject();
+    _enemy1= new Enemy();
+    //_enemy2= new Enemy();
+    //_enemy3= new Enemy();
+    //_gameObjects.push_back(_enemy2);
+    //_gameObjects.push_back(_enemy3);
+    _gameObjects.push_back(_player);
+    _gameObjects.push_back(_enemy1);  
+    _gameObjects.push_back(_gameObject);    
     SDL_Texture *surface_texture(nullptr);
     if(SDL_Init(SDL_INIT_AUDIO || SDL_INIT_VIDEO) == 0)
     {
@@ -77,9 +87,9 @@ bool Game::init(char* const title, int xpos, int ypos, int width, int height, bo
     _destRect.y=_srcRect.y=0;
     _destRect.w=_srcRect.w;
     _destRect.h=_srcRect.h;*/
-    _gameObject.Load(0,100,128,82,"animate");
-    _player.Load(0,200,128,82,"animate");
-
+    (*_gameObject).Load(0,100,128,82,"animate");
+    (*_player).Load(0,200,128,82,"animate");
+    (*_enemy1).Load(0,0,128,82,"animate");
     cout <<"init succeeded"<<endl;
     _running= true;
     return true;
@@ -88,8 +98,10 @@ void Game::render()
 {
     TextureManager *theTextureManager= TextureManager::textureManagerInstance();
     theTextureManager->Load("assets/animate.png", "animate", _renderer);
-    _gameObject.draw(_renderer);
-    _player.draw(_renderer);
+    for(int i(0); i<_gameObjects.size(); i++)
+    {
+        _gameObjects[i]->draw(_renderer); 
+    }
     SDL_RenderPresent(_renderer);
     /*
     SDL_SetRenderDrawColor(_renderer, 255,0,0,255);
@@ -124,7 +136,9 @@ void Game::handleEvents()
                 _running=false;
                 cout <<"The main loop is broken"<<endl;
                 break;
-            default:
+            case SDL_KEYDOWN:
+                _running=false;
+                cout <<"The main loop is broken"<<endl;
                 break;
         }
     }
@@ -132,8 +146,12 @@ void Game::handleEvents()
 }
 void Game::update()
 {
-    _gameObject.update();
-    _player.update();
+    for(int i(0); i<end(_gameObjects)-begin(_gameObjects); i++)
+    {
+        _gameObjects[i]->update();
+    }
+    //(*_gameObject).update();
+    //(*_player).update();
     //_currentFrame=int((SDL_GetTicks()/100)%6); 
 }
 void Game::clean()
