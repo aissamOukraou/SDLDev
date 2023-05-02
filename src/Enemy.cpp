@@ -19,10 +19,16 @@ void Enemy::draw(SDL_Renderer* renderer)
 }
 void Enemy::update()
 {
-    if(_xpos > 640 || _ypos > 480)
+    if(_xpos > 640)
     {
         _xpos=0;
         _ypos=0;
+    }
+    else if(_xpos > 50 && _ypos > 300)
+    {
+        GameObject::update();
+        _ypos-=1;
+        _xpos-=1;
     }
     cout <<"We're calling the enemy overriden update function" <<endl;
     _xpos+=1;
