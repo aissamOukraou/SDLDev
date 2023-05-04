@@ -1,7 +1,7 @@
 #ifndef _ENEMY_
 #define _ENEMY_
 
-#include "GameObjects.hpp"
+#include "GameObjects.hpp" 
 
 class Enemy: public GameObject
 {

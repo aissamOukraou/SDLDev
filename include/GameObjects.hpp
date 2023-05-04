@@ -5,7 +5,7 @@
 
 class GameObject
 {
-public:
+public: 
     GameObject();
     ~GameObject();
     std::string getObjectTextureID() const;
